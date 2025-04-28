@@ -112,7 +112,7 @@ export function montgomeryMul(a: bigint, b: bigint, ctx: MontgomeryReductionCont
     if (a === ZERO || b === ZERO) return ZERO;
 
     const rm1 = ctx.r - ONE;
-    let unredProduct = a * b;
+    const unredProduct = a * b;
 
     const t = (((unredProduct & rm1) * ctx.baseInv) & rm1) * ctx.base;
     let product = (unredProduct - t) >> ctx.shift;

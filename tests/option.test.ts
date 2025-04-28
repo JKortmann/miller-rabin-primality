@@ -46,7 +46,7 @@ describe("input options", () => {
     });
 
     it("should throw a TypeError when bases option is not an array", async ({expect}) => {
-        // @ts-ignore
+        // @ts-expect-error Type error would be catched by TS itself on translation
         await expect(primalityTest(113n, {bases: 2})).rejects.toThrowError(TypeError)
     });
 
