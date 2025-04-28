@@ -16,6 +16,10 @@ Primitive BigInt values are used for arbitrary-size inputs and outputs. Accordin
 - Safari v14+
 - Opera v54+
 
+## Credits
+
+I explicitly want to state that this is a fork of [latnov/MillerRabinPrimality](https://github.com/latonv/MillerRabinPrimality).
+
 ## Usage
 
 The `primalityTest` function accepts any number, and returns a Promise resolving to a primality result object.
@@ -24,7 +28,7 @@ If `probablePrime` is `false`, then `n` is guaranteed to be composite, and the p
 In some cases, a `divisor` of composite `n` will be found, in which case it will also be provided on the result object.
 
 ```js
-const { primalityTest } = require('primality-test');
+import { primalityTest } from 'primality-test';
 
 primalityTest(91).then((result) => {
   // result should resemble:
