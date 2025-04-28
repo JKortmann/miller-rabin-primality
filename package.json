@@ -9,7 +9,9 @@
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "ci": "npm run build && npm run check-format && npm run check-exports && npm run test"
+    "ci": "npm run build && npm run check-format && npm run check-exports && npm run test",
+    "local-release": "changeset version && changeset publish",
+    "prepublishOnly": "npm run ci"
   },
   "type": "module",
   "keywords": [
@@ -25,6 +27,7 @@
   ],
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
+    "@changesets/cli": "^2.29.2",
     "@eslint/js": "^9.25.1",
     "@eslint/json": "^0.12.0",
     "@eslint/markdown": "^6.4.0",
