@@ -4,13 +4,13 @@ import {
   invMontgomeryReduce,
   montgomerySqr,
   montgomeryPow
-} from "./montgomery";
+} from "./montgomery.js"
 
 import {
   twoMultiplicity,
   bitLength,
   getRandomBitString
-} from "./util";
+} from "./util.js";
 
 
 // Some useful BigInt constants
@@ -57,7 +57,7 @@ export interface PrimalityTestOptions {
 /**
  * Options passed to the internal PrimalityResult constructor.
  */
-interface PrimalityResultOptions {
+export interface PrimalityResultOptions {
   /**
    * The primality-tested number to which the result applies
    */
@@ -107,7 +107,7 @@ class PrimalityResult {
    * Constructs a result object from the given options
    * @param {PrimalityResultOptions} options
    */
-  constructor({ n, probablePrime, witness=null, divisor=null }: PrimalityResultOptions) {
+  constructor({ n, probablePrime, witness, divisor }: PrimalityResultOptions) {
     this.n = n;
     this.probablePrime = probablePrime;
     this.witness = witness;
@@ -158,7 +158,7 @@ function ugcd(a: bigint, b: bigint): bigint {
 
 /**
  * Determines an appropriate number of Miller-Rabin testing rounds to perform based on the size of the
- * input number being tested. Larger numbers generally require fewer rounds to maintain a given level
+ * input number being tested. Larger numbers generally need fewer rounds to maintain a given level
  * of accuracy.
  * 
  * @param {number} inputBits The number of bits in the input number.
@@ -186,7 +186,7 @@ function getAdaptiveNumRounds(inputBits: number): number {
  * @param {bigint} nSub One less than the number being primality tested
  * @returns {bigint[] | null} An array of BigInts provided all bases were valid, or null if the input was null
  */
-function validateBases(bases: BigIntResolvable[] | null, nSub: bigint): bigint[] | null {
+function validateBases(bases: BigIntResolvable[] | undefined, nSub: bigint): bigint[] | null {
   if (bases == null) {
     return null;
   } else if (Array.isArray(bases)) {
@@ -242,13 +242,13 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
 
       // Handle some small special cases
       if (n < TWO) { // n = 0 or 1
-        resolve(new PrimalityResult({ n: sign * n, probablePrime: false, witness: null, divisor: null }));
+        resolve(new PrimalityResult({ n: sign * n, probablePrime: false, witness: undefined, divisor: undefined }));
         return;
       } else if (n < FOUR) { // n = 2 or 3
-        resolve(new PrimalityResult({ n: sign * n, probablePrime: true, witness: null, divisor: null }));
+        resolve(new PrimalityResult({ n: sign * n, probablePrime: true, witness: undefined, divisor: undefined }));
         return;
       } else if (!(n & ONE)) { // Quick short-circuit for other even n
-        resolve(new PrimalityResult({ n: sign * n, probablePrime: false, witness: null, divisor: TWO }));
+        resolve(new PrimalityResult({ n: sign * n, probablePrime: false, witness: undefined, divisor: TWO }));
         return;
       }
 
@@ -275,8 +275,8 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
       }
 
       let probablePrime = true;
-      let witness = null;
-      let divisor = null;
+      let witness: bigint | undefined = undefined;
+      let divisor: bigint | undefined = undefined;
       let baseIndex = 0; // Only relevant if the user specified a list of bases to use
 
       outer:
@@ -295,7 +295,7 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
 
         // Check whether the chosen base has any factors in common with n (if so, we can end early)
         if (findDivisor) {
-          const gcd = ugcd(n, base);
+          const gcd = ugcd(n, base!);
           if (gcd !== ONE) {
             probablePrime = false;
             witness = base;
@@ -304,7 +304,7 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
           }
         }
 
-        const baseReduced = montgomeryReduce(base, reductionContext);
+        const baseReduced = montgomeryReduce(base!, reductionContext);
         let x = montgomeryPow(baseReduced, d, reductionContext);
         if (x === oneReduced || x === nSubReduced) continue; // The test passed: base^d = +/-1 (mod n)
         
@@ -318,7 +318,7 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
             witness = base;         // So this base is a witness to the guaranteed compositeness of n
             if (findDivisor) {
               divisor = ugcd(invMontgomeryReduce(x, reductionContext) - ONE, n);
-              if (divisor === ONE) divisor = null;
+              if (divisor === ONE) divisor = undefined;
             }
             break outer;
           } else if (y === nSubReduced) {
@@ -337,7 +337,7 @@ export function primalityTest(n: BigIntResolvable, { numRounds=undefined, bases=
           witness = base;
           if (findDivisor) {
             divisor = ugcd(invMontgomeryReduce(x, reductionContext) - ONE, n);
-            if (divisor === ONE) divisor = null;
+            if (divisor === ONE) divisor = undefined;
           }
           break;
         }

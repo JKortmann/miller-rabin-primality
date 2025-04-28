@@ -1,7 +1,7 @@
 import {
   invertPowerOfTwo,
   bitLength
-} from "./util";
+} from "./util.js";
 
 // Some useful BigInt constants
 const ZERO = 0n;

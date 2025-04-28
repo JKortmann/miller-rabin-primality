@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
+    "lib": ["es2022"],
     "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "NodeNext",
     "target": "es2020",
-    "allowJs": true,
-    "checkJs": true,
-    "moduleResolution": "node"
+    "moduleDetection": "force",
+    "rootDir": "src",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
   },
   "exclude": ["dist", "node_modules", "tests"]
 }

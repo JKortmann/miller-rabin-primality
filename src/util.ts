@@ -11,7 +11,7 @@ const ONE  = 1n;
  * @returns {bigint}
  */
 export function invertPowerOfTwo(exp: number, base: bigint): bigint {
-  // Penk's rshift inversion method, but restricted to powers of 2 and odd bases (which is all we require for Miller-Rabin)
+  // Penk's rshift inversion method, but restricted to powers of 2 and odd bases (which is all we need for Miller-Rabin)
   // Just start from 1 and repeatedly halve, adding the base whenever necessary to remain even.
   let inv = ONE;
   for (let i = 0; i < exp; i++) {
@@ -48,7 +48,7 @@ export function twoMultiplicity(n: bigint): bigint {
  * Calculates the length of `n` in bits.
  * 
  * @param {bigint} n Any positive integer
- * @returns {number} The number of bits required to encode `n`
+ * @returns {number} The number of bits needed to encode `n`
  */
 export function bitLength(n: bigint): number {
   // Surprisingly, string conversion seems to be the most performant way to get the bit length of a BigInt at present...
