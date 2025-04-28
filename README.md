@@ -28,7 +28,7 @@ If `probablePrime` is `false`, then `n` is guaranteed to be composite, and the p
 In some cases, a `divisor` of composite `n` will be found, in which case it will also be provided on the result object.
 
 ```js
-import { primalityTest } from 'primality-test';
+import { primalityTest } from 'miller-rabin-primality';
 
 primalityTest(91).then((result) => {
   // result should resemble:
