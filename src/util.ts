@@ -2,7 +2,6 @@
 const ZERO = 0n;
 const ONE = 1n;
 
-
 /**
  * Calculates the inverse of `2^exp` modulo the given odd `base`.
  *
@@ -11,20 +10,19 @@ const ONE = 1n;
  * @returns {bigint}
  */
 export function invertPowerOfTwo(exp: number, base: bigint): bigint {
-    // Penk's rshift inversion method, but restricted to powers of 2 and odd bases (which is all we need for Miller-Rabin)
-    // Just start from 1 and repeatedly halve, adding the base whenever necessary to remain even.
-    let inv = ONE;
-    for (let i = 0; i < exp; i++) {
-        if (inv & ONE) {
-            inv += base;
-        }
-
-        inv >>= ONE;
+  // Penk's rshift inversion method, but restricted to powers of 2 and odd bases (which is all we need for Miller-Rabin)
+  // Just start from 1 and repeatedly halve, adding the base whenever necessary to remain even.
+  let inv = ONE;
+  for (let i = 0; i < exp; i++) {
+    if (inv & ONE) {
+      inv += base;
     }
 
-    return inv;
-}
+    inv >>= ONE;
+  }
 
+  return inv;
+}
 
 /**
  * Calculates the multiplicity of 2 in the prime factorization of `n` -- i.e., how many factors of 2 `n` contains.
@@ -34,15 +32,15 @@ export function invertPowerOfTwo(exp: number, base: bigint): bigint {
  * @returns {bigint} The multiplicity of 2 in the prime factorization of `n`
  */
 export function twoMultiplicity(n: bigint): bigint {
-    if (n === ZERO) return ZERO;
+  if (n === ZERO) return ZERO;
 
-    let m = ZERO;
-    while (true) { // Since n is not 0, it must have a leading 1 bit, so this is safe
-        if (n & (ONE << m)) return m; // Bail out when we reach the least significant 1 bit
-        m++;
-    }
+  let m = ZERO;
+  while (true) {
+    // Since n is not 0, it must have a leading 1 bit, so this is safe
+    if (n & (ONE << m)) return m; // Bail out when we reach the least significant 1 bit
+    m++;
+  }
 }
-
 
 /**
  * Calculates the length of `n` in bits.
@@ -51,10 +49,9 @@ export function twoMultiplicity(n: bigint): bigint {
  * @returns {number} The number of bits needed to encode `n`
  */
 export function bitLength(n: bigint): number {
-    // Surprisingly, string conversion seems to be the most performant way to get the bit length of a BigInt at present...
-    return n.toString(2).length;
+  // Surprisingly, string conversion seems to be the most performant way to get the bit length of a BigInt at present...
+  return n.toString(2).length;
 }
-
 
 /**
  * Produces a string of random bits with the specified length.
@@ -64,9 +61,9 @@ export function bitLength(n: bigint): number {
  * @returns {string} A string of `numBits` random bits.
  */
 export function getRandomBitString(numBits: number): string {
-    let bits = "";
-    while (bits.length < numBits) {
-        bits += Math.random().toString(2).substring(2, 50);
-    }
-    return bits.substring(0, numBits);
+  let bits = '';
+  while (bits.length < numBits) {
+    bits += Math.random().toString(2).substring(2, 50);
+  }
+  return bits.substring(0, numBits);
 }

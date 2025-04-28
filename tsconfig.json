@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
+    "noImplicitOverride": true
   },
   "exclude": ["dist", "node_modules", "tests"]
 }
